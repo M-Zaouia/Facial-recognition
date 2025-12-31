@@ -53,4 +53,4 @@ Voir requirements.txt :
 - numpy
 
 ## Auteur
-Marouane ZA
+Marouane Zaouia
