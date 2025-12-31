@@ -13,13 +13,13 @@ WIDTH, HEIGHT = 640, 480
 TARGET_FPS = 30
 
 # Vitesse / qualité reconnaissance
-RESIZE_FACTOR = 0.5          # 0.5 => 320x240 pour le traitement. Mets 0.4 si besoin (plus rapide)
+RESIZE_FACTOR = 0.5          
 TOLERANCE = 0.50
-RECO_EVERY_SECONDS = 0.25    # ex: 0.25s = 4 fois par seconde (augmente à 0.35/0.5 si encore lourd)
+RECO_EVERY_SECONDS = 0.25   
 
 # Latence caméra
-DROP_GRABS = 2               # augmente à 3-5 si tu sens un retard
-BACKEND = cv2.CAP_DSHOW      # essaie cv2.CAP_MSMF si besoin
+DROP_GRABS = 2               
+BACKEND = cv2.CAP_DSHOW     
 
 
 # =========================
@@ -64,7 +64,7 @@ class CameraStream:
         with self.lock:
             if self.frame is None:
                 return False, None, 0, 0.0
-            # copie pour éviter conflit
+            
             return self.ok, self.frame.copy(), self.frame_id, self.ts
 
     def release(self):
@@ -87,7 +87,7 @@ known_encoding = ref_encs[0]
 
 
 # =========================
-# Thread reconnaissance (NE BLOQUE PAS l'affichage)
+# Thread reconnaissance 
 # =========================
 result_lock = threading.Lock()
 last_locations = []
@@ -110,7 +110,7 @@ def recognition_worker(cam: CameraStream):
         small = cv2.resize(frame_bgr, (0, 0), fx=RESIZE_FACTOR, fy=RESIZE_FACTOR)
         rgb_small = cv2.cvtColor(small, cv2.COLOR_BGR2RGB)
 
-        # Détection rapide (upsample=0)
+        # Détection rapide 
         locations = face_recognition.face_locations(
             rgb_small, number_of_times_to_upsample=0, model="hog"
         )
@@ -153,14 +153,14 @@ while True:
     if not ok or frame_bgr is None:
         continue
 
-    # FPS boucle (peut être > 30)
+    # FPS boucle 
     now = time.time()
     dt = now - prev_loop
     prev_loop = now
     if dt > 0:
         loop_fps = 0.9 * loop_fps + 0.1 * (1.0 / dt)
 
-    # FPS caméra (quand nouvelle frame)
+    # FPS caméra 
     if fid != last_id:
         dt_cam = now - last_new_frame_time
         last_new_frame_time = now
@@ -170,7 +170,7 @@ while True:
 
     lat_ms = (time.time() - ts) * 1000.0
 
-    # Récupérer le dernier résultat de reconnaissance (sans bloquer)
+    
     with result_lock:
         locs = list(last_locations)
         names = list(last_names)

@@ -4,7 +4,7 @@ import face_recognition
 # --- Réglages ---
 REFERENCE_IMAGE = "marouane.jpg"
 PERSON_NAME = "Marouane"
-SEUIL = 0.50  # 0.45 à 0.60 typique (0.30 est très strict)
+SEUIL = 0.50  
 
 # 1) Charger l'image de référence
 image_ref = face_recognition.load_image_file(REFERENCE_IMAGE)
@@ -57,8 +57,6 @@ while True:
         cv2.putText(frame, name, (left + 5, bottom - 5),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
-        # Debug optionnel
-        # print("Distance:", distance)
 
     cv2.imshow("Reconnaissance faciale simple (q pour quitter)", frame)
 
